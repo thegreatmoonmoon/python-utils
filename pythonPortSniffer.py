@@ -1,14 +1,20 @@
 import socket
+from threading import Thread
+
 
 def isOpen(ip,port):
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-       s.connect((ip, int(port)))
-       s.shutdown(2)
-       return True
-    except:
-       return False
+   s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+   try:
+      s.connect((ip, int(port)))
+      s.shutdown(2)
+      print("Port {}: open".format(port))
+      return True
+   except:
+      print("Port {}: closed".format(port))
+      return False
 
-for i in range (80, 1000):
-   if isOpen('x.x.x.x', i) == True:
-      print("port {}: Open".format(i))
+
+if __name__ == "__main__":
+    
+   for i in range (80, 100):
+      Thread(target=isOpen, args=('8.8.8.8', i, )).start()
